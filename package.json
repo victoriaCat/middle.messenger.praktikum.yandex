@@ -1,0 +1,43 @@
+{
+  "name": "mf.messenger.praktikum.yandex",
+  "engines": {
+    "node": ">=14.5.0"
+  },
+  "version": "1.0.0",
+  "description": "https://www.figma.com/file/24EUnEHGEDNLdOcxg7ULwV/Chat?node-id=0%3A1",
+  "main": "index.js",
+  "scripts": {
+    "less-compile": "for lessfile in $(find ./src/ -name '*.less'); do sub=${lessfile#./src/}; lessc $lessfile ./static/${sub%.less}.css; done",
+    "test": "./node_modules/.bin/mocha",
+    "build": "tsc && lessc ./src/index.less ./static/index.css && cp -rv static/* build/ && node extension.js",
+    "start": "node server.js",
+    "all": "npm run build && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victoriaCat/mf.messenger.praktikum.yandex.git"
+  },
+  "author": "Victoria Katysheva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victoriaCat/mf.messenger.praktikum.yandex/issues"
+  },
+  "homepage": "https://github.com/victoriaCat/mf.messenger.praktikum.yandex#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "filehound": "^1.17.4",
+    "less": "^4.1.1",
+    "typescript": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.16",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.37",
+    "chai": "^4.3.4",
+    "handlebars": "4.7.7",
+    "jsdom": "^16.5.2",
+    "mocha": "^8.3.2",
+    "parcel-bundler": "^1.12.5",
+    "ts-node": "^9.1.1"
+  }
+}
