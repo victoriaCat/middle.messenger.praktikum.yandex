@@ -12,6 +12,5 @@ Typescript + handlebars + express
 - API: https://ya-praktikum.tech/api/v2/swagger/#/
 
 ## Установка
-- `npm run build` — сборка проекта
 - `npm run start` — сборка + запуск локального сервера
 - `npm run test` — запуск тестов

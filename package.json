@@ -8,8 +8,7 @@
   "main": "src/index.html",
   "scripts": {
     "test": "TS_NODE_TRANSPILE_ONLY=1 mocha --exit --timeout 3000",
-    "build": "parcel build src/index.html --no-cache && cp -r src/assets dist/",
-    "start": "npm run build && node server.js",
+    "start": "parcel build src/index.html --no-cache && cp -r src/assets dist/ && node server.js",
     "lint": "eslint . --fix --ext .ts && stylelint --fix **/*.less"
   },
   "repository": {
