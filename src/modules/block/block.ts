@@ -1,4 +1,5 @@
-import EventBus from './eventBus';
+import EventBus from '../eventBus';
+import {isEqual} from '../isEqual';
 
 export default class Block {
     static EVENTS = {
@@ -14,6 +15,7 @@ export default class Block {
         props: Record<string, unknown>
     }
     props: { [key: string]: any };
+    oldProps: { [key: string]: any };
 
     /**
      * @param {string} tagName
@@ -29,7 +31,7 @@ export default class Block {
         };
 
         this.props = this.makePropsProxy(props);
-
+        this.oldProps = {};
         this.eventBus = () => eventBus;
 
         this.registerEvents(eventBus);
@@ -62,18 +64,20 @@ export default class Block {
     }
 
     private _componentDidUpdate(): void {
-        const response = this.componentDidUpdate();
+        const response = this.componentDidUpdate(this.oldProps, this.props);
         if (response) this._componentDidMount();
     }
 
-    componentDidUpdate(): boolean {
-        return true;
+    componentDidUpdate(oldProps: { [key: string]: any }, newProps: { [key: string]: any }): boolean {
+        return !isEqual(oldProps, newProps);
     }
 
     setProps = (nextProps: { [key: string]: any }) => {
         if (!nextProps) {
             return;
         }
+        this.oldProps = Object.assign({}, this.props);
+
         Object.keys(nextProps).forEach(key => {
             this.props[key] = nextProps[key];
         })
@@ -104,6 +108,9 @@ export default class Block {
         //@ts-ignore
         const block: string = this.render();
         this.removeEvents();
+        if(this.props.className){
+            this._element!.classList.add(this.props.className);
+        }
         this._element!.innerHTML = block;
         this.addEvents();
     }

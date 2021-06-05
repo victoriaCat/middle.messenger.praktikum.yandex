@@ -1,4 +1,4 @@
-import Block from '../../modules/block';
+import Block from '../../modules/block/block';
 import {template} from './button.tmpl';
 
 export class Button extends Block {

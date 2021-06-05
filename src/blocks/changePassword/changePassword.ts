@@ -1,8 +1,9 @@
-import Block from '../../modules/block';
+import Block from '../../modules/block/block';
 import {Button} from '../../components/button/button';
 import {submitValidation, blurValidation, validatedInput} from '../../modules/styleValidation';
 import {template} from './changePassword.tmpl';
 import escape from '../../modules/escape';
+import {users} from '../../api/usersAPI';
 
 export class ChangePassword extends Block {
     constructor() {
@@ -63,11 +64,16 @@ export class ChangePassword extends Block {
         const {inputs} = this.props;
         this.defineInputs(inputs);
         inputs.forEach((input: validatedInput) => input.elem!.value = escape(input.elem!.value));
+        users.changePassword({
+            headers: {
+                'content-type': 'application/json'
+            },
+            data: JSON.stringify({
+                oldPassword: inputs[0].elem.value,
+                newPassword: inputs[1].elem.value
+            })
+        }).catch(e => console.log(e));
         submitValidation(inputs);
-        console.log({
-            oldPassword: inputs[0].elem.value,
-            newPassword: inputs[1].elem.value
-        });
     }
 
     handleInputsBlur(e: Event) {

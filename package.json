@@ -1,43 +1,58 @@
 {
-  "name": "mf.messenger.praktikum.yandex",
+  "name": "middle.messenger.praktikum.yandex",
   "engines": {
     "node": ">=14.5.0"
   },
   "version": "1.0.0",
   "description": "https://www.figma.com/file/24EUnEHGEDNLdOcxg7ULwV/Chat?node-id=0%3A1",
-  "main": "index.js",
+  "main": "src/index.html",
   "scripts": {
-    "less-compile": "for lessfile in $(find ./src/ -name '*.less'); do sub=${lessfile#./src/}; lessc $lessfile ./static/${sub%.less}.css; done",
-    "test": "./node_modules/.bin/mocha",
-    "build": "tsc && lessc ./src/index.less ./static/index.css && cp -rv static/* build/ && node extension.js",
-    "start": "node server.js",
-    "all": "npm run build && npm start"
+    "test": "TS_NODE_TRANSPILE_ONLY=1 mocha --exit --timeout 3000",
+    "build": "parcel build src/index.html --no-cache && cp -r src/assets dist/",
+    "start": "npm run build && node server.js",
+    "lint": "eslint . --fix --ext .ts && stylelint --fix **/*.less"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/victoriaCat/mf.messenger.praktikum.yandex.git"
+    "url": "git+https://github.com/victoriaCat/middle.messenger.praktikum.yandex.git"
   },
   "author": "Victoria Katysheva",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/victoriaCat/mf.messenger.praktikum.yandex/issues"
+    "url": "https://github.com/victoriaCat/middle.messenger.praktikum.yandex/issues"
   },
-  "homepage": "https://github.com/victoriaCat/mf.messenger.praktikum.yandex#readme",
-  "dependencies": {
-    "express": "^4.17.1",
-    "filehound": "^1.17.4",
-    "less": "^4.1.1",
-    "typescript": "^4.2.2"
-  },
+  "homepage": "https://github.com/victoriaCat/middle.messenger.praktikum.yandex#readme",
+  "dependencies": {},
   "devDependencies": {
-    "@types/chai": "^4.2.16",
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-typescript": "^7.13.0",
+    "@babel/register": "^7.13.16",
+    "@types/chai": "^4.2.18",
+    "@types/jsdom": "^16.2.10",
+    "@types/jsdom-global": "^3.0.2",
     "@types/mocha": "^8.2.2",
     "@types/node": "^14.14.37",
+    "@types/sinon-chai": "^3.2.5",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
     "chai": "^4.3.4",
-    "handlebars": "4.7.7",
+    "eslint": "^7.28.0",
+    "eslint-config-xo": "^0.36.0",
+    "express": "^4.17.1",
+    "handlebars": "^4.7.7",
     "jsdom": "^16.5.2",
-    "mocha": "^8.3.2",
+    "jsdom-global": "^3.0.2",
+    "less": "^4.1.1",
+    "mocha": "^8.4.0",
+    "mocha-jsdom": "^2.0.0",
     "parcel-bundler": "^1.12.5",
-    "ts-node": "^9.1.1"
+    "sinon": "^11.1.1",
+    "sinon-chai": "^3.7.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
   }
 }

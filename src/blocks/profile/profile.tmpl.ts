@@ -2,7 +2,7 @@ const source = `<div class="profile-page">
         <div class="profile-back-to-chats-block">
             <button class="profile-back-to-chats-button">
                 <a class="profile-back-to-chats-link" href="/chats">
-                    <img src="../../assets/icons/arrow-left.svg" alt="Назад">
+                    <img src="assets/icons/arrow-left.svg" alt="Назад">
                 </a>
             </button>
         </div>
@@ -11,39 +11,39 @@ const source = `<div class="profile-page">
                 <div class="profile-change-picture">
                     <a class="profile-change-picture-link" href="">
                         <div class="user-picture">
-                            <img class="user-picture-default-icon" src="../../assets/icons/profile-picture.svg" alt="Фото">
+                            <img class="user-picture-default-icon" src={{avatar}} alt="Фото профиля"/>
                         </div>
                         <div class="change-picture">
                             <span>Поменять аватар</span>
                         </div>
                     </a>
                 </div>
-                <div class="user-nickname">Иван</div>
+                <div class="user-nickname">{{nickname}}</div>
             </div>
             <ul class="user-info">
-                <li class="user-info-item profile-password">
+                <li class="user-info-item profile-email">
                     <div class="info-item-label">Почта</div>
-                    <div class="info-item-data">pochta@yandex.ru</div>
+                    <div class="info-item-data">{{email}}</div>
                 </li>
                 <li class="user-info-item profile-login">
                     <div class="info-item-label">Логин</div>
-                    <div class="info-item-data">ivanivanov</div>
+                    <div class="info-item-data">{{login}}</div>
                 </li>
                 <li class="user-info-item profile-name">
                     <div class="info-item-label">Имя</div>
-                    <div class="info-item-data">Иван</div>
+                    <div class="info-item-data">{{firstName}}</div>
                 </li>
                 <li class="user-info-item profile-last-name">
                     <div class="info-item-label">Фамилия</div>
-                    <div class="info-item-data">Иванов</div>
+                    <div class="info-item-data">{{secondName}}</div>
                 </li>
                 <li class="user-info-item profile-nickname">
                     <div class="info-item-label">Имя в чате</div>
-                    <div class="info-item-data">Иван</div>
+                    <div class="info-item-data">{{nickname}}</div>
                 </li>
                 <li class="user-info-item profile-phone">
                     <div class="info-item-label">Телефон</div>
-                    <div class="info-item-data">+7 (909) 967 30 30</div>
+                    <div class="info-item-data">{{phone}}</div>
                 </li>
             </ul>
             <ul class="profile-actions">

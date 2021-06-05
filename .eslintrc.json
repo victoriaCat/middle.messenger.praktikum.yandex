@@ -1,0 +1,30 @@
+{
+  "extends": "xo",
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "max-len": ["error", {
+        "code": 500,
+        "ignoreStrings": true,
+        "ignoreUrls": true,
+        "ignoreComments": true
+      }],
+    "@typescript-eslint/no-unused-vars": 2,
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1, "maxBOF": 1 }],
+    "no-nested-ternary": "error",
+    "no-trailing-spaces": "error",
+    "no-unneeded-ternary": "error",
+    "no-whitespace-before-property": "error",
+    "arrow-parens": ["error", "as-needed"],
+    "arrow-spacing": ["error", { "before": true, "after": true }],
+    "no-duplicate-imports": "error",
+    "no-useless-rename": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "default-case": "error",
+    "no-unused-vars": ["error", { "args": "none" }]
+  }
+}

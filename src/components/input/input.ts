@@ -1,4 +1,4 @@
-import Block from '../../modules/block';
+import Block from '../../modules/block/block';
 import {template} from './input.tmpl';
 
 export type inputType = {

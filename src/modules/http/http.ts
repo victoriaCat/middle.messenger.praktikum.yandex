@@ -1,4 +1,4 @@
-import queryString, {isPlainObject} from "./queryString";
+import queryString, {isPlainObject} from '../queryString';
 
 type PlainObject<T = unknown> = {
     [k in string]: T;
@@ -26,15 +26,19 @@ export default class HTTPTransport {
     }
 
     get = (url: string, options?: Options) => {
-        return this.request(this.baseURL + url + queryString(options!.data), {...options, method: METHODS.GET}, options!.timeout);
+        return options ? this.request(this.baseURL + url + queryString(options!.data), {
+                ...options,
+                method: METHODS.GET
+            }, options!.timeout)
+            : this.request(this.baseURL + url, {method: METHODS.GET});
     };
 
     put = (url: string, options: Options) => {
         return this.request(this.baseURL + url, {...options, method: METHODS.PUT}, options.timeout);
     };
 
-    post = (url: string, options: Options) => {
-        return this.request(this.baseURL + url, {...options, method: METHODS.POST}, options.timeout);
+    post = (url: string, options?: Options) => {
+        return this.request(this.baseURL + url, {...options, method: METHODS.POST}, options?.timeout);
     };
 
     delete = (url: string, options: Options) => {
@@ -46,10 +50,11 @@ export default class HTTPTransport {
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            // @ts-ignore
-            xhr.open(method, url);
+            if (typeof method === "string") {
+                xhr.open(method, url);
+            }
 
-            if(isPlainObject(headers)){
+            if (isPlainObject(headers)) {
                 Object.keys(headers).forEach(key => {
                     xhr.setRequestHeader(key, <string>headers[key]);
                 });
@@ -66,6 +71,8 @@ export default class HTTPTransport {
             xhr.onabort = reject;
             xhr.onerror = reject;
             xhr.ontimeout = reject;
+
+            xhr.withCredentials = true;
 
             if (method === METHODS.GET || !data) {
                 xhr.send();

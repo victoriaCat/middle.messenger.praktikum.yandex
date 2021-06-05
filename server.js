@@ -2,12 +2,12 @@ const express = require('express');
 const path = require('path');
 
 const server = express();
-const PORT = 4000;
+const PORT = 3000;
 
-server.use(express.static(path.join(__dirname + '/build')));
+server.use(express.static(path.join(__dirname + '/dist')));
 
 server.use('/*', (req, res) => {
-    res.sendFile(__dirname + '/build/index.html');
+    res.sendFile(__dirname + '/dist/index.html');
 })
 
 // server.use(function(req, res) {

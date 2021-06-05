@@ -48,17 +48,57 @@
 }
 
 .input-err {
-  display: block;
-  height: 12px;
-  visibility: hidden;
+  display: none;
 }
 
-.input-err.show{
+.input-err.show {
+  display: block;
+  height: 12px;
   color: #FF2F2F;
   font-size: 10px;
-  visibility: visible;
 }
 
 .validation-error {
   border-bottom: 1px solid #FF2F2F;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+}
+
+.modal.hide {
+  display: none;
+}
+
+.modal-wrapper {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 30%;
+  margin: 0 auto;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: .3rem;
+  outline: 0;
+}
+
+.modal-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
