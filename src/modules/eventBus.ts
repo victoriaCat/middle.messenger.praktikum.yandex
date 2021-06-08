@@ -1,7 +1,8 @@
-export default class EventBus{
+export default class EventBus {
     listeners: {
         [key: string]: any[]
     };
+
     constructor() {
         this.listeners = {};
     }
@@ -29,7 +30,7 @@ export default class EventBus{
             throw new Error(`Нет события: ${event}`);
         }
 
-        this.listeners[event].forEach(function(listener) {
+        this.listeners[event].forEach(function (listener) {
             listener(...args);
         });
     }

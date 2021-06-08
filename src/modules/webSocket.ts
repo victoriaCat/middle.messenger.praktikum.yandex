@@ -1,4 +1,4 @@
-type messagePayloadT =  {
+type messagePayloadT = {
     content: string,
     type: string
 }

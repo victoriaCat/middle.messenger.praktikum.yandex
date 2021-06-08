@@ -65,14 +65,11 @@ export class ChangePassword extends Block {
         this.defineInputs(inputs);
         inputs.forEach((input: validatedInput) => input.elem!.value = escape(input.elem!.value));
         users.changePassword({
-            headers: {
-                'content-type': 'application/json'
-            },
-            data: JSON.stringify({
+            data: {
                 oldPassword: inputs[0].elem.value,
                 newPassword: inputs[1].elem.value
-            })
-        }).catch(e => console.log(e));
+            }
+        }).catch(console.log);
         submitValidation(inputs);
     }
 

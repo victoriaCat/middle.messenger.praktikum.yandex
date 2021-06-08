@@ -1,22 +1,22 @@
 import HTTP, {Options} from '../modules/http/http';
-import { BaseAPI } from './baseAPI';
+import {BaseAPI} from './baseAPI';
 
 const usersAPIInstance = new HTTP('https://ya-praktikum.tech/api/v2/user');
 
-class UsersAPI extends BaseAPI{
-    changeInfo(options: Options){
+class UsersAPI extends BaseAPI {
+    changeInfo(options: Options) {
         return usersAPIInstance.put('/profile', options);
     }
 
-    changePassword(options: Options){
+    changePassword(options: Options) {
         return usersAPIInstance.put('/password', options);
     }
 
-    changeAvatar(options: Options){
+    changeAvatar(options: Options) {
         return usersAPIInstance.put('/profile/avatar', options);
     }
 
-    searchByLogin(options: Options){
+    searchByLogin(options: Options) {
         return usersAPIInstance.post('/search', options);
     }
 }

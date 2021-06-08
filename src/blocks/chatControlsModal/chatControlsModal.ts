@@ -34,34 +34,24 @@ export class ChatControlsModal extends Block {
             login: userLogin
         };
         return users.searchByLogin({
-            headers: {
-                'content-type': 'application/json'
-            },
-            data: JSON.stringify(searchByLoginData)
+            data: searchByLoginData
         }).then(result => {
             // @ts-ignore
             const response = JSON.parse(result.response);
-            console.log(response)
             data.users.push(response[0].id);
-        }).catch(e => console.log(e));
+        }).catch(console.log);
     }
 
     addUser(data: chatDataT) {
         chats.addUsers({
-            headers: {
-                'content-type': 'application/json'
-            },
-            data: JSON.stringify(data)
-        }).then(() => router().go('/chats')).catch(e => console.log(e));
+            data
+        }).then(() => router().go('/chats')).catch(console.log);
     }
 
     removeUser(data: chatDataT) {
         chats.deleteUsers({
-            headers: {
-                'content-type': 'application/json'
-            },
-            data: JSON.stringify(data)
-        }).then(() => router().go('/chats')).catch(e => console.log(e));
+            data
+        }).then(() => router().go('/chats')).catch(console.log);
     }
 
     handleClick(e: Event) {
@@ -78,8 +68,7 @@ export class ChatControlsModal extends Block {
         };
         if (this.props.modalType === 'add') {
             this.searchUser(chatData).then(() => this.addUser(chatData));
-        }
-        if (this.props.modalType === 'remove') {
+        } else if (this.props.modalType === 'remove') {
             this.searchUser(chatData).then(() => this.removeUser(chatData));
         }
     }

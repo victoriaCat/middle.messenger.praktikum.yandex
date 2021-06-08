@@ -27,14 +27,14 @@ export class ChatWindow extends Block {
         return chats.getChatToken(this.props.chatId.toString())
             // @ts-ignore
             .then(result => this.setProps({...this.props, chatToken: JSON.parse(result.response).token}))
-            .catch(e => console.log(e));
+            .catch(console.log);
     }
 
     async getUserInfo() {
         return auth.userInfo()
             // @ts-ignore
             .then(result => this.setProps({...this.props, userId: JSON.parse(result.response).id}))
-            .catch(e => console.log(e));
+            .catch(console.log);
     }
 
     showChatControls() {

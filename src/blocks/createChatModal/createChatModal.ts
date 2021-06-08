@@ -21,7 +21,7 @@ export class CreateChatModal extends Block {
     }
 
     handleClick(e: Event) {
-        if(e.target === document.querySelector('.modal')){
+        if (e.target === document.querySelector('.modal')) {
             const mainNode = document.querySelector('main')!;
             const modal = mainNode.lastChild!;
             mainNode.removeChild(modal);
@@ -35,10 +35,7 @@ export class CreateChatModal extends Block {
             title: chatTitleInput.value
         };
         chats.createChat({
-            headers: {
-                'content-type': 'application/json'
-            },
-            data: JSON.stringify(chatData)
+            data: chatData
         }).then(() => router().go('/chats')).catch(e => console.log(e));
     }
 

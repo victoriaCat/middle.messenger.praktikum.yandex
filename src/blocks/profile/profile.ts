@@ -16,7 +16,7 @@ export class Profile extends Block {
     componentDidMount() {
         // @ts-ignore
         auth.userInfo().then(result => this.setProps({...this.props, userData: JSON.parse(result.response)}))
-            .catch(e => console.log(e));
+            .catch(console.log);
     }
 
     handleClick(e: Event) {
@@ -24,19 +24,19 @@ export class Profile extends Block {
         if (e.target === quitLink) {
             e.preventDefault();
             auth.logOut().then(() => router().go('/'))
-                .catch(e => console.log(e));
+                .catch(console.log);
         }
     }
 
     render() {
         const {userData} = this.props;
         return template({
-            firstName: userData.first_name ? userData.first_name : '',
-            secondName: userData.second_name ? userData.second_name : '',
-            nickname: userData.display_name ? userData.display_name : '',
-            login: userData.login ? userData.login : '',
-            email: userData.email ? userData.email : '',
-            phone: userData.phone ? userData.phone : '',
+            firstName: userData.first_name || '',
+            secondName: userData.second_name || '',
+            nickname: userData.display_name || '',
+            login: userData.login || '',
+            email: userData.email || '',
+            phone: userData.phone || '',
             avatar: userData.avatar || 'assets/icons/profile-picture.svg'
         })
     }

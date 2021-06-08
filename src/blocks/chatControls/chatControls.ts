@@ -30,14 +30,11 @@ export class ChatControls extends Block {
     }
 
     handleClick(e: Event) {
-        console.log(e.target)
         if (e.target === document.querySelector('.add-user')) {
             this.showControlsModal('add');
-        }
-        if (e.target === document.querySelector('.remove-user')) {
+        } else if (e.target === document.querySelector('.remove-user')) {
             this.showControlsModal('remove');
-        }
-        if (e.target === document.querySelector('.add-new-chat-button')) {
+        } else if (e.target === document.querySelector('.add-new-chat-button')) {
             const createChatModal = new CreateChatModal();
             document.querySelector('.app main')!.appendChild(createChatModal.getContent()!);
         }

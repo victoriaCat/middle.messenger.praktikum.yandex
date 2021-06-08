@@ -33,12 +33,12 @@ export default class HTTPTransport {
             : this.request(this.baseURL + url, {method: METHODS.GET});
     };
 
-    put = (url: string, options: Options) => {
+    put = (url: string, options: Options = {}) => {
         return this.request(this.baseURL + url, {...options, method: METHODS.PUT}, options.timeout);
     };
 
-    post = (url: string, options?: Options) => {
-        return this.request(this.baseURL + url, {...options, method: METHODS.POST}, options?.timeout);
+    post = (url: string, options: Options = {}) => {
+        return this.request(this.baseURL + url, {...options, method: METHODS.POST}, options.timeout);
     };
 
     delete = (url: string, options: Options) => {
@@ -58,6 +58,8 @@ export default class HTTPTransport {
                 Object.keys(headers).forEach(key => {
                     xhr.setRequestHeader(key, <string>headers[key]);
                 });
+            } else {
+                xhr.setRequestHeader('content-type', 'application/json')
             }
 
             if (typeof timeout === "number") {
@@ -76,6 +78,8 @@ export default class HTTPTransport {
 
             if (method === METHODS.GET || !data) {
                 xhr.send();
+            } else if (!headers) {
+                xhr.send(JSON.stringify(data));
             } else {
                 // @ts-ignore
                 xhr.send(data);

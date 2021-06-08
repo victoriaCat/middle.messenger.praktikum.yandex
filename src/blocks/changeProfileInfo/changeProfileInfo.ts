@@ -89,7 +89,7 @@ export class ChangeProfileInfo extends Block {
     componentDidMount() {
         // @ts-ignore
         auth.userInfo().then(result => this.setProps({...this.props, userData: JSON.parse(result.response)}))
-            .catch(e => console.log(e));
+            .catch(console.log);
 
         this.definePlaceholders();
     }
@@ -135,11 +135,8 @@ export class ChangeProfileInfo extends Block {
                 display_name: inputs[5].elem.value
             };
             users.changeInfo({
-                headers: {
-                    'content-type': 'application/json'
-                },
-                data: JSON.stringify(userData)
-            }).catch(e => console.log(e));
+                data: userData
+            }).catch(console.log);
             submitValidation(inputs);
         }
     }
@@ -156,12 +153,12 @@ export class ChangeProfileInfo extends Block {
     }
 
     handleClick(e: Event) {
-        const changeAvatarLink: HTMLElement = document.querySelector('.change-picture')!;
-        if (e.target === changeAvatarLink) {
+        if (e.target === document.querySelector('.change-picture')) {
             e.preventDefault();
-            if(document.querySelector('.modal')){
-                document.querySelector('.modal')!.classList.remove('hide');
-            }else{
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal!.classList.remove('hide');
+            } else {
                 const changeAvatarModal = new ChangeAvatar();
                 document.querySelector('.app main')!.appendChild(changeAvatarModal.getContent()!);
             }

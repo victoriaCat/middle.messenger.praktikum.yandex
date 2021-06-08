@@ -108,7 +108,7 @@ export default class Block {
         //@ts-ignore
         const block: string = this.render();
         this.removeEvents();
-        if(this.props.className){
+        if (this.props.className) {
             this._element!.classList.add(this.props.className);
         }
         this._element!.innerHTML = block;

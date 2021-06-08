@@ -27,8 +27,8 @@ describe('Testing Router module', () => {
     });
 
     beforeEach(function () {
-        window.history.pushState({ name: 'not found' }, 'not found', 'http://localhost/404');
-        window.history.pushState({ name: 'error' }, 'error', 'http://localhost/500');
+        window.history.pushState({name: 'not found'}, 'not found', 'http://localhost/404');
+        window.history.pushState({name: 'error'}, 'error', 'http://localhost/500');
         router = new Router('.app');
         router
             .use('/404', Error404)

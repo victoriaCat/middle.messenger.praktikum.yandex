@@ -16,24 +16,23 @@ export class Chats extends Block {
     componentDidMount() {
         // @ts-ignore
         chats.getChats().then(result => this.setProps({...this.props, chats: JSON.parse(result.response)}))
-            .catch(e => console.log(e));
+            .catch(console.log);
     }
 
     openChatWindow() {
         const chatItem: HTMLElement = document.querySelector('.chat-item')!;
         const chatWindow = new ChatWindow({chatId: chatItem.dataset.chatId});
-        const chatsPage =  document.querySelector('.chats-page')!;
+        const chatsPage = document.querySelector('.chats-page')!;
         const chooseChatWindow = document.querySelector('.chat-window')!;
         chatsPage.removeChild(chooseChatWindow);
         chatsPage.appendChild(chatWindow.getContent()!);
     }
 
     handleClick(e: Event) {
-        if(e.target === document.querySelector('.create-new-chat')){
+        if (e.target === document.querySelector('.create-new-chat')) {
             const createChatModal = new CreateChatModal();
             document.querySelector('.app main')!.appendChild(createChatModal.getContent()!);
-        }
-        if(e.target === document.querySelector('.chat-item')){
+        } else if (e.target === document.querySelector('.chat-item')) {
             this.openChatWindow();
         }
     }

@@ -10,10 +10,6 @@ server.use('/*', (req, res) => {
     res.sendFile(__dirname + '/dist/index.html');
 })
 
-// server.use(function(req, res) {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
-
 server.listen(PORT, function () {
     console.log(`Server is listening on port ${PORT}`);
 });

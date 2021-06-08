@@ -25,7 +25,7 @@ export class ChangeAvatar extends Block {
         e.preventDefault();
         const formElem: HTMLFormElement = document.querySelector('.change-avatar-form')!;
         const inputElem: HTMLInputElement = document.querySelector('#avatar')!;
-        if(e.target === formElem){
+        if (e.target === formElem) {
             const formData: FormData = new FormData();
             // @ts-ignore
             formData.append('avatar', inputElem.files[0]);
@@ -34,14 +34,14 @@ export class ChangeAvatar extends Block {
                     'content-type': 'multipart/form-data'
                 },
                 data: formData
-            }).catch(e => console.log(e));
+            }).catch(console.log);
         }
     }
 
     handleClick(e: Event) {
         const changeAvatarModal: HTMLElement = document.querySelector('.modal')!;
         if (e.target === changeAvatarModal) {
-            document.querySelector('.modal')!.classList.add('hide');
+            changeAvatarModal.classList.add('hide');
         }
     }
 

@@ -1,5 +1,5 @@
 import HTTP, {Options} from '../modules/http/http';
-import { BaseAPI } from './baseAPI';
+import {BaseAPI} from './baseAPI';
 
 const chatAPIInstance = new HTTP('https://ya-praktikum.tech/api/v2/chats');
 
@@ -12,15 +12,15 @@ class ChatsAPI extends BaseAPI {
         return chatAPIInstance.get('/');
     }
 
-    addUsers(options: Options){
+    addUsers(options: Options) {
         return chatAPIInstance.put('/users', options);
     }
 
-    deleteUsers(options: Options){
+    deleteUsers(options: Options) {
         return chatAPIInstance.delete('/users', options);
     }
 
-    getChatToken(id: string){
+    getChatToken(id: string) {
         return chatAPIInstance.post(`/token/${id}`);
     }
 }

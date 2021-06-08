@@ -43,16 +43,13 @@ export class LogIn extends Block {
         loginElem.value = escape(loginElem.value);
         passwordElem.value = escape(passwordElem.value);
         auth.signIn({
-            headers: {
-                'content-type': 'application/json'
-            },
-            data: JSON.stringify({
+            data: {
                 login: loginElem.value,
                 password: passwordElem.value
-            })
+            }
         })
             .then(() => router().go('/chats'))
-            .catch(e => console.log(e));
+            .catch(console.log);
         submitValidation([
             {
                 elem: loginElem,
@@ -93,8 +90,7 @@ export class LogIn extends Block {
         const submitButton: HTMLElement = document.querySelector('.log-in-button')!;
         if (e.target === noAccountLink) {
             router().go('/sign_in');
-        }
-        if (e.target === submitButton) {
+        } else if (e.target === submitButton) {
             this.handleSubmit(e);
         }
     }

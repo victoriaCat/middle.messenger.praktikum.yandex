@@ -118,11 +118,8 @@ export class SignIn extends Block {
             phone: inputs[4].elem.value
         };
         auth.signUp({
-            headers: {
-                'content-type': 'application/json'
-            },
-            data: JSON.stringify(data)
-        }).then(() => router().go('/chats')).catch(e => console.log(e));
+            data
+        }).then(() => router().go('/chats')).catch(console.log);
         submitValidation(inputs);
     }
 
@@ -141,8 +138,7 @@ export class SignIn extends Block {
         if (e.target === document.querySelector('.sign-in-link-to-log-in')) {
             e.preventDefault();
             router().go('/');
-        }
-        if (e.target === document.querySelector('.sign-in-button')) {
+        } else if (e.target === document.querySelector('.sign-in-button')) {
             this.handleSubmit(e);
         }
     }
