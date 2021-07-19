@@ -25,7 +25,7 @@ function getParams(data: PlainObject | [], parentKey?: string) {
     const result: [string, string][] = [];
 
     // @ts-ignore
-    for(const [key, value] of Object.entries(data)) {
+    for (const [key, value] of Object.entries(data)) {
         if (isArrayOrObject(value)) {
             result.push(...getParams(value, getKey(key, parentKey)));
         } else {

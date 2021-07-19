@@ -1,13 +1,4 @@
-import Block, {renderBlock} from '../block';
-import {LogIn} from '../../blocks/logIn/logIn';
-import {SignIn} from '../../blocks/signIn/signIn';
-import {ChangePassword} from '../../blocks/changePassword/changePassword';
-import {ChangeProfileInfo} from '../../blocks/changeProfileInfo/changeProfileInfo';
-import {Chats} from '../../blocks/chats/chats';
-import {ChatWindow} from '../../blocks/chatWindow/chatWindow';
-import {Profile} from '../../blocks/profile/profile';
-import {Error404} from '../../blocks/errorPage/error404';
-import {Error500} from '../../blocks/errorPage/error500';
+import Block, {renderBlock} from '../block/block';
 
 function isEqual(lhs: string, rhs: string): boolean {
     return lhs === rhs;
@@ -33,6 +24,12 @@ class Route {
         }
     }
 
+    leave(): void {
+        if (this._block) {
+            this._block.hide();
+        }
+    }
+
     match(pathname: string) {
         return isEqual(pathname, this._pathname);
     }
@@ -43,20 +40,9 @@ class Route {
     }
 }
 
-const routes = [new Route('/', LogIn, {rootQuery: '.app'}),
-    new Route('/sign_in', SignIn, {rootQuery: '.app'}),
-new Route('/change_password', ChangePassword, {rootQuery: '.app'}),
-new Route('/change_profile_info', ChangeProfileInfo, {rootQuery: '.app'}),
-new Route('/chats', Chats, {rootQuery: '.app'}),
-new Route('/chat_window', ChatWindow, {rootQuery: '.app'}),
-new Route('/profile', Profile, {rootQuery: '.app'}),
-new Route('/404', Error404, {rootQuery: '.app'}),
-new Route('/500', Error500, {rootQuery: '.app'})];
-
 export class Router {
     private routes: Route[] | undefined;
     private history: History | undefined;
-    // @ts-ignore
     private _currentRoute: Route | null | undefined;
     private _rootQuery: string | undefined;
     private static __instance: Router;
@@ -66,7 +52,7 @@ export class Router {
             return Router.__instance;
         }
 
-        this.routes = routes;
+        this.routes = [];
         this.history = window.history;
         this._currentRoute = null;
         this._rootQuery = rootQuery;
@@ -74,7 +60,7 @@ export class Router {
         Router.__instance = this;
     }
 
-    use(pathname: string, block: Block) {
+    use(pathname: string, block: any) {
         const route = new Route(pathname, block, {rootQuery: this._rootQuery});
         this.routes!.push(route);
         return this;
@@ -89,6 +75,15 @@ export class Router {
 
     _onRoute(pathname: string) {
         const route = this.getRoute(pathname);
+
+        if (!route) {
+            return this.go('/404');
+        }
+
+        if (this._currentRoute) {
+            this._currentRoute.leave();
+        }
+
         this._currentRoute = route;
         route!.render();
     }
@@ -111,23 +106,4 @@ export class Router {
     getRoute(pathname: string) {
         return this.routes!.find(route => route.match(pathname));
     }
-}
-
-let _router: Router;
-export default function router() {
-    if (!_router) {
-        _router = new Router('.app');
-        _router
-            .use('/', new LogIn())
-            .use('/sign_in', new SignIn())
-            .use('/change_password', new ChangePassword())
-            .use('/change_profile_info', new ChangeProfileInfo())
-            .use('/chats', new Chats())
-            .use('/chat_widow', new ChatWindow())
-            .use('/profile', new Profile())
-            .use('/404', new Error404())
-            .use('/500', new Error500())
-            .start();
-    }
-    return _router;
 }

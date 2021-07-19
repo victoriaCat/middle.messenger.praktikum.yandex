@@ -1,9 +1,10 @@
-import Block from '../../modules/block';
+import Block from '../../modules/block/block';
 import {Button} from '../../components/button/button';
 import {submitValidation, blurValidation, validatedInput} from '../../modules/styleValidation';
 import {template} from './signIn.tmpl';
+import {auth} from '../../api/authAPI';
 import escape from '../../modules/escape';
-import router from '../../modules/router/router';
+import router from '../../index';
 
 export class SignIn extends Block {
     constructor() {
@@ -76,15 +77,9 @@ export class SignIn extends Block {
             submitButton: new Button({
                 class: 'sign-in-button basic-button',
                 type: 'submit',
-                text: 'Зарегистрироваться',
-                events: {
-                    click: () => {
-                        submitValidation(this.props.inputs);
-                    }
-                },
+                text: 'Зарегистрироваться'
             }),
             events: {
-                submit: (e: Event) => this.handleSubmit(e),
                 focusout: (e: Event) => this.handleInputBlur(e),
                 click: (e: Event) => this.handleClick(e)
             }
@@ -114,14 +109,17 @@ export class SignIn extends Block {
         const {inputs} = this.props;
         this.defineInputs(inputs);
         inputs.forEach((input: validatedInput) => input.elem!.value = escape(input.elem!.value));
-        console.log({
-            email: inputs[0].elem.value,
-            login: inputs[1].elem.value,
+        const data = {
             first_name: inputs[2].elem.value,
             second_name: inputs[3].elem.value,
-            phone: inputs[4].elem.value,
-            password: inputs[5].elem.value
-        });
+            login: inputs[1].elem.value,
+            email: inputs[0].elem.value,
+            password: inputs[5].elem.value,
+            phone: inputs[4].elem.value
+        };
+        auth.signUp({
+            data
+        }).then(() => router().go('/chats')).catch(console.log);
         submitValidation(inputs);
     }
 
@@ -130,17 +128,18 @@ export class SignIn extends Block {
         this.defineInputs(inputs);
         e.stopPropagation();
         inputs.forEach((input: validatedInput) => {
-            if(e.target === input.elem){
+            if (e.target === input.elem) {
                 blurValidation(input);
             }
         })
     }
 
     handleClick(e: Event) {
-        e.preventDefault();
-        const signInToLogInLink: HTMLAnchorElement = document.querySelector('.sign-in-link-to-log-in')!;
-        if(e.target === signInToLogInLink){
+        if (e.target === document.querySelector('.sign-in-link-to-log-in')) {
+            e.preventDefault();
             router().go('/');
+        } else if (e.target === document.querySelector('.sign-in-button')) {
+            this.handleSubmit(e);
         }
     }
 

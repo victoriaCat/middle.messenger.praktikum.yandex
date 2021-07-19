@@ -1,0 +1,38 @@
+.chat-controls {
+  position: absolute;
+  top: 9%;
+  right: 20px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+  border-radius: 12px;
+  width: 20%;
+  height: 12%;
+}
+
+.chat-controls-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.chat-controls-item {
+  list-style-type: none;
+  display: inherit;
+  justify-content: space-around;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 25px;
+  height: 30%;
+}
+
+.chat-controls-remove-icon {
+  margin-left: -3px;
+}
+
+.add-user *, .remove-user * {
+  pointer-events: none;
+}
+
+.add-user, .remove-user, .add-new-chat-button {
+  cursor: pointer;
+}

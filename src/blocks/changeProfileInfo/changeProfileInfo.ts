@@ -1,19 +1,23 @@
-import Block from '../../modules/block';
+import Block from '../../modules/block/block';
 import {Button} from '../../components/button/button';
+import {ChangeAvatar} from '../changeAvatar/changeAvatar';
 import {submitValidation, blurValidation, validatedInput} from '../../modules/styleValidation';
 import {template} from './changeProfileInfo.tmpl';
 import escape from '../../modules/escape';
+import {users} from '../../api/usersAPI';
+import {auth} from '../../api/authAPI';
 
-export class ChangeProfileInfo extends Block{
-    constructor(){
+export class ChangeProfileInfo extends Block {
+    constructor() {
         super('main', {
+            userData: {},
             inputs: [
                 {
                     name: 'Почта',
                     type: 'email',
                     labelClass: 'user-info-label',
                     inputClass: 'user-info-data email',
-                    placeholder: 'pochta\@yandex\.ru',
+                    placeholder: '',
                     errClass: 'email-err',
                     validationType: 'email',
                     errSelector: '.email-err'
@@ -23,7 +27,7 @@ export class ChangeProfileInfo extends Block{
                     type: 'text',
                     labelClass: 'user-info-label',
                     inputClass: 'user-info-data login',
-                    placeholder: 'ivanivanov',
+                    placeholder: '',
                     errClass: 'login-err',
                     validationType: 'login',
                     errSelector: '.login-err'
@@ -33,7 +37,7 @@ export class ChangeProfileInfo extends Block{
                     type: 'text',
                     labelClass: 'user-info-label',
                     inputClass: 'user-info-data first-name',
-                    placeholder: 'Иван',
+                    placeholder: '',
                     errClass: 'first-name-err',
                     validationType: 'first_name',
                     errSelector: '.first-name-err'
@@ -43,7 +47,7 @@ export class ChangeProfileInfo extends Block{
                     type: 'text',
                     labelClass: 'user-info-label',
                     inputClass: 'user-info-data second-name',
-                    placeholder: 'Иванов',
+                    placeholder: '',
                     errClass: 'second-name-err',
                     validationType: 'second_name',
                     errSelector: '.second-name-err'
@@ -53,7 +57,7 @@ export class ChangeProfileInfo extends Block{
                     type: 'text',
                     labelClass: 'user-info-label',
                     inputClass: 'user-info-data nickname',
-                    placeholder: 'Иван',
+                    placeholder: '',
                     errClass: 'nickname-err',
                     validationType: 'nickname',
                     errSelector: '.nickname-err'
@@ -63,7 +67,7 @@ export class ChangeProfileInfo extends Block{
                     type: 'tel',
                     labelClass: 'user-info-label',
                     inputClass: 'user-info-data phone',
-                    placeholder: '\+7\(909\)9673030',
+                    placeholder: '',
                     errClass: 'phone-err',
                     validationType: 'phone',
                     errSelector: '.phone-err'
@@ -75,10 +79,19 @@ export class ChangeProfileInfo extends Block{
                 text: 'Сохранить'
             }),
             events: {
-                submit: (e:Event) => this.handleSubmit(e),
-                focusout: (e:Event) => this.handleInputBlur(e)
+                submit: (e: Event) => this.handleSubmit(e),
+                focusout: (e: Event) => this.handleInputBlur(e),
+                click: (e: Event) => this.handleClick(e)
             }
         });
+    }
+
+    componentDidMount() {
+        // @ts-ignore
+        auth.userInfo().then(result => this.setProps({...this.props, userData: JSON.parse(result.response)}))
+            .catch(console.log);
+
+        this.definePlaceholders();
     }
 
     defineInputs = (inputs: validatedInput[]) => {
@@ -97,20 +110,35 @@ export class ChangeProfileInfo extends Block{
         inputs[5]['elem'] = nicknameElem;
     }
 
-    handleSubmit(e: Event){
+    definePlaceholders() {
+        Object.keys(this.props.userData).forEach(key => {
+            this.props.inputs.forEach((input: { [x: string]: any; }) => {
+                if ((input.validationType === 'nickname' && key === 'display_name') || input.validationType === key) {
+                    input['placeholder'] = this.props.userData[key];
+                }
+            })
+        })
+    }
+
+    handleSubmit(e: Event) {
         e.preventDefault();
-        const {inputs} = this.props;
-        this.defineInputs(inputs);
-        inputs.forEach((input: validatedInput) => input.elem!.value = escape(input.elem!.value));
-        console.log({
-            email: inputs[0].elem.value,
-            login: inputs[1].elem.value,
-            first_name: inputs[2].elem.value,
-            second_name: inputs[3].elem.value,
-            phone: inputs[4].elem.value,
-            nickname: inputs[5].elem!.value
-        });
-        submitValidation(inputs);
+        if (e.target === document.querySelector('.change-user-info')) {
+            const {inputs} = this.props;
+            this.defineInputs(inputs);
+            inputs.forEach((input: validatedInput) => input.elem!.value = escape(input.elem!.value));
+            const userData = {
+                email: inputs[0].elem.value,
+                login: inputs[1].elem.value,
+                first_name: inputs[2].elem.value,
+                second_name: inputs[3].elem.value,
+                phone: inputs[4].elem.value,
+                display_name: inputs[5].elem.value
+            };
+            users.changeInfo({
+                data: userData
+            }).catch(console.log);
+            submitValidation(inputs);
+        }
     }
 
     handleInputBlur(e: Event) {
@@ -118,16 +146,30 @@ export class ChangeProfileInfo extends Block{
         const {inputs} = this.props;
         this.defineInputs(inputs);
         inputs.forEach((input: validatedInput) => {
-            if(e.target === input.elem){
+            if (e.target === input.elem) {
                 blurValidation(input);
             }
         })
     }
 
-    render(){
+    handleClick(e: Event) {
+        if (e.target === document.querySelector('.change-picture')) {
+            e.preventDefault();
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal!.classList.remove('hide');
+            } else {
+                const changeAvatarModal = new ChangeAvatar();
+                document.querySelector('.app main')!.appendChild(changeAvatarModal.getContent()!);
+            }
+        }
+    }
+
+    render() {
         const {inputs, submitButton} = this.props;
         return template({
             inputs,
+            avatar: this.props.userData.avatar || 'assets/icons/profile-picture.svg',
             submitButton: submitButton.render()
         })
     }

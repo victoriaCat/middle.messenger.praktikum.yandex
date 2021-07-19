@@ -45,7 +45,7 @@ html, body {
   border: none;
   text-align: center;
   background-color: #EFEFEF;
-  background-image: url("../../assets/icons/search.svg");
+  background-image: url("assets/icons/search.svg");
   background-position: 35% center;
   background-repeat: no-repeat;
   border-radius: 5px;
@@ -91,6 +91,7 @@ html, body {
   justify-content: space-between;
   align-items: center;
   margin-left: 4px;
+  pointer-events: none
 }
 
 .chat-item-right-side {
@@ -99,6 +100,7 @@ html, body {
   justify-content: space-around;
   align-items: start;
   margin-right: 4px;
+  pointer-events: none;
 }
 
 .chat-picture {
@@ -165,6 +167,7 @@ html, body {
 }
 
 .chat-window {
+  height: 98vh;
   width: 76%;
   position: relative;
   display: inherit;
@@ -196,6 +199,10 @@ html, body {
 
 .chat-options:focus, .send-button:focus, .select-file:focus, .message-input {
   outline: none;
+}
+
+.chat-options-icon {
+  pointer-events: none;
 }
 
 .chat-history {
@@ -294,6 +301,10 @@ html, body {
   border-radius: 30px;
   border: none;
   padding-left: 20px;
+}
+
+.send-icon {
+  pointer-events: none;
 }
 
 

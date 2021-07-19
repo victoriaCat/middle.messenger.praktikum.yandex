@@ -1,5 +1,5 @@
 {
   "extension": ["ts"],
-  "spec": "./src/**/*.spec.ts",
-  "require": "ts-node/register"
+  "spec": "src/**/*.spec.ts",
+  "require": ["src/modules/babel-register.js", "ts-node/register"]
 }

@@ -11,7 +11,7 @@ export type validatedInput = {
     validationType: string
 }
 
-export function blurValidation(input: validatedInput){
+export function blurValidation(input: validatedInput) {
     if (!validate(input.elem!.value, input.validationType).validate) {
         input.elem?.classList.add('validation-error');
         const errorBlock = document.querySelector(input.errSelector);

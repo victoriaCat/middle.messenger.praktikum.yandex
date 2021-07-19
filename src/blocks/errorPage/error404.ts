@@ -1,5 +1,6 @@
-import Block from '../../modules/block';
-import {template} from './error404.tmpl';
+import Handlebars from 'handlebars';
+import Block from '../../modules/block/block';
+import {source} from './error404.tmpl';
 
 export class Error404 extends Block {
     constructor() {
@@ -7,6 +8,6 @@ export class Error404 extends Block {
     }
 
     render() {
-        return template({});
+        return Handlebars.compile(source)({});
     }
 }

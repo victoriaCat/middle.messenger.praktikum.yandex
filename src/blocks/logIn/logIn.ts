@@ -1,10 +1,11 @@
-import Block from '../../modules/block';
+import Block from '../../modules/block/block';
 import {Button} from '../../components/button/button';
 import {Input} from '../../components/input/input';
 import {submitValidation, blurValidation} from '../../modules/styleValidation';
 import {template} from './logIn.tmpl';
+import {auth} from '../../api/authAPI';
 import escape from '../../modules/escape';
-import router from '../../modules/router/router';
+import router from '../../index';
 
 export class LogIn extends Block {
     constructor() {
@@ -29,7 +30,6 @@ export class LogIn extends Block {
                 errClass: 'password-err'
             }),
             events: {
-                submit: (e: Event) => this.handleSubmit(e),
                 focusout: (e: Event) => this.handleInputBlur(e),
                 click: (e: Event) => this.handleClick(e)
             }
@@ -42,10 +42,14 @@ export class LogIn extends Block {
         const passwordElem: HTMLInputElement = document.querySelector('.password')!;
         loginElem.value = escape(loginElem.value);
         passwordElem.value = escape(passwordElem.value);
-        console.log({
-            login: loginElem.value,
-            password: passwordElem.value
-        });
+        auth.signIn({
+            data: {
+                login: loginElem.value,
+                password: passwordElem.value
+            }
+        })
+            .then(() => router().go('/chats'))
+            .catch(console.log);
         submitValidation([
             {
                 elem: loginElem,
@@ -83,8 +87,11 @@ export class LogIn extends Block {
     handleClick(e: Event) {
         e.preventDefault();
         const noAccountLink: HTMLAnchorElement = document.querySelector('.log-in-no-account-link')!;
-        if(e.target === noAccountLink){
+        const submitButton: HTMLElement = document.querySelector('.log-in-button')!;
+        if (e.target === noAccountLink) {
             router().go('/sign_in');
+        } else if (e.target === submitButton) {
+            this.handleSubmit(e);
         }
     }
 
