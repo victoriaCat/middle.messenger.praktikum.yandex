@@ -7,6 +7,7 @@ import {Chats} from './blocks/chats/chats';
 import {Profile} from './blocks/profile/profile';
 import {Error404} from './blocks/errorPage/error404';
 import {Error500} from './blocks/errorPage/error500';
+import './index.less';
 
 let _router: Router;
 export default function router() {
