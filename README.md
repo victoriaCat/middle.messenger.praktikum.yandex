@@ -1,4 +1,4 @@
-Ссылка на PR sprint_3: https://github.com/victoriaCat/middle.messenger.praktikum.yandex/pull/1
+Ссылка на PR sprint_4: https://github.com/victoriaCat/middle.messenger.praktikum.yandex/pull/2
 ## Яндекс Практикум Мессенджер
 
 https://naughty-lamarr-fd6546.netlify.app
