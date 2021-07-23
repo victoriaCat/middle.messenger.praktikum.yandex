@@ -20,6 +20,11 @@
     "url": "https://github.com/victoriaCat/middle.messenger.praktikum.yandex/issues"
   },
   "homepage": "https://github.com/victoriaCat/middle.messenger.praktikum.yandex#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm-run-all test lint:all"
+    }
+  },
   "devDependencies": {
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
@@ -43,6 +48,7 @@
     "handlebars": "^4.7.7",
     "handlebars-loader": "^1.7.1",
     "html-webpack-plugin": "^5.3.2",
+    "husky": "^7.0.1",
     "jsdom": "^16.5.2",
     "jsdom-global": "^3.0.2",
     "less": "^4.1.1",
