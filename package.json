@@ -10,6 +10,7 @@
     "test": "TS_NODE_TRANSPILE_ONLY=1 mocha --exit --timeout 3000",
     "build": "webpack",
     "serve": "webpack serve",
+    "start": "webpack && webpack serve",
     "lint": "eslint . --fix --ext .ts && stylelint --fix **/*.less"
   },
   "repository": {
