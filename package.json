@@ -25,6 +25,7 @@
       "pre-commit": "npm-run-all test lint"
     }
   },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
