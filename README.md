@@ -1,7 +1,9 @@
 Ссылка на PR sprint_3: https://github.com/victoriaCat/middle.messenger.praktikum.yandex/pull/1
 ## Яндекс Практикум Мессенджер
 
-https://naughty-lamarr-fd6546.netlify.app
+HEROKU: https://middle-messenger-yp.herokuapp.com/
+
+NETLIFY: https://naughty-lamarr-fd6546.netlify.app
 
 ![Messenger](https://pictures.s3.yandex.net/resources/S1_01_Mes_1596142517.png)
 
