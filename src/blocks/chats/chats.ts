@@ -3,6 +3,8 @@ import {template} from './chats.tmpl';
 import {chats} from '../../api/chatsAPI';
 import {CreateChatModal} from '../createChatModal/createChatModal';
 import {ChatWindow} from '../chatWindow/chatWindow';
+import {ActionTypes, GlobalStore} from '../../modules/store';
+
 
 export class Chats extends Block {
     constructor() {
@@ -13,10 +15,18 @@ export class Chats extends Block {
         });
     }
 
-    componentDidMount() {
-        // @ts-ignore
-        chats.getChats().then(result => this.setProps({...this.props, chats: JSON.parse(result.response)}))
-            .catch(console.log);
+    async componentDidMount() {
+        GlobalStore.subscribe(ActionTypes.GET_CHATS, this.getChatsCallback.bind(this));
+        try {
+            const chatList = <XMLHttpRequest>await chats.getChats();
+            GlobalStore.dispatchAction(ActionTypes.GET_CHATS, JSON.parse(chatList.response));
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    getChatsCallback() {
+        this.setProps({...this.props, chats: GlobalStore.get('chats')})
     }
 
     openChatWindow() {

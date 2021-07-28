@@ -2,7 +2,7 @@ import Block from '../../modules/block/block';
 import {Button} from '../../components/button/button';
 import {template} from './createChatModal.tmpl';
 import {chats} from '../../api/chatsAPI';
-import router from '../../index';
+import router from '../../../static';
 
 export class CreateChatModal extends Block {
     constructor() {

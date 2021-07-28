@@ -2,7 +2,7 @@ import Block from '../../modules/block/block';
 import {template} from './chatControlsModal.tmpl';
 import {chats} from '../../api/chatsAPI';
 import {users} from '../../api/usersAPI';
-import router from '../../index';
+import router from '../../../static';
 
 type chatDataT = {
     users: any[];

@@ -1,7 +1,8 @@
 import Block from '../../modules/block/block';
 import {template} from './profile.tmpl';
 import {auth} from '../../api/authAPI';
-import router from '../../index';
+import router from '../../../static';
+import {ActionTypes, GlobalStore} from '../../modules/store';
 
 export class Profile extends Block {
     constructor() {
@@ -23,7 +24,10 @@ export class Profile extends Block {
         const quitLink: HTMLAnchorElement = document.querySelector('.quit-link')!;
         if (e.target === quitLink) {
             e.preventDefault();
-            auth.logOut().then(() => router().go('/'))
+            auth.logOut().then(() => {
+                GlobalStore.dispatchAction(ActionTypes.LOGOUT);
+                router().go('/');
+            })
                 .catch(console.log);
         }
     }
@@ -37,7 +41,7 @@ export class Profile extends Block {
             login: userData.login || '',
             email: userData.email || '',
             phone: userData.phone || '',
-            avatar: userData.avatar || 'assets/icons/profile-picture.svg'
+            avatar: `https://ya-praktikum.tech/api/v2/resources${userData.avatar}` || 'assets/icons/profile-picture.svg'
         })
     }
 }

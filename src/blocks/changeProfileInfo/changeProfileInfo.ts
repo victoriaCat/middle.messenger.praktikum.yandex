@@ -127,12 +127,12 @@ export class ChangeProfileInfo extends Block {
             this.defineInputs(inputs);
             inputs.forEach((input: validatedInput) => input.elem!.value = escape(input.elem!.value));
             const userData = {
-                email: inputs[0].elem.value,
-                login: inputs[1].elem.value,
-                first_name: inputs[2].elem.value,
-                second_name: inputs[3].elem.value,
-                phone: inputs[4].elem.value,
-                display_name: inputs[5].elem.value
+                email: inputs[0].elem.value || this.props.userData.email,
+                login: inputs[1].elem.value || this.props.userData.login,
+                first_name: inputs[2].elem.value || this.props.userData.first_name,
+                second_name: inputs[3].elem.value || this.props.userData.second_name,
+                phone: inputs[4].elem.value || this.props.userData.phone,
+                display_name: inputs[5].elem.value || this.props.userData.display_name
             };
             users.changeInfo({
                 data: userData

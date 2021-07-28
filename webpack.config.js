@@ -5,13 +5,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: production ? 'production' : 'development',
-    entry: './src/index.ts',
+    entry: path.join(__dirname, 'static', 'index.ts'),
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'messenger.bundle.js'
+        filename: 'index.js'
     },
     resolve: {
-        extensions: ['.ts', '.js', '.json']
+        extensions: ['.ts', '.js', '.json', '.less', '.html']
     },
     module: {
         rules: [
@@ -44,11 +44,11 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'src/index.html'
+            template: 'static/index.html'
         }),
         new CopyPlugin({
             patterns: [
-                { from: 'src/assets', to: 'assets' },
+                { from: 'static/assets', to: 'assets' },
             ],
         }),
     ],

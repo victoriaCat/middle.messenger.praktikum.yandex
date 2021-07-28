@@ -1,4 +1,6 @@
 import Block, {renderBlock} from '../block/block';
+import { GlobalStore } from '../store';
+
 
 function isEqual(lhs: string, rhs: string): boolean {
     return lhs === rhs;
@@ -79,6 +81,8 @@ export class Router {
         if (!route) {
             return this.go('/404');
         }
+
+        GlobalStore.unsubscribeAll();
 
         if (this._currentRoute) {
             this._currentRoute.leave();

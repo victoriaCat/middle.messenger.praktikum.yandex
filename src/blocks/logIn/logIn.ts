@@ -1,11 +1,12 @@
 import Block from '../../modules/block/block';
 import {Button} from '../../components/button/button';
 import {Input} from '../../components/input/input';
+import {ActionTypes, GlobalStore} from '../../modules/store';
 import {submitValidation, blurValidation} from '../../modules/styleValidation';
 import {template} from './logIn.tmpl';
 import {auth} from '../../api/authAPI';
 import escape from '../../modules/escape';
-import router from '../../index';
+import router from '../../../static';
 
 export class LogIn extends Block {
     constructor() {
@@ -36,20 +37,36 @@ export class LogIn extends Block {
         });
     }
 
-    handleSubmit(e: Event) {
+    async componentDidMount() {
+        try {
+            const userInfo = await auth.userInfo();
+            if (userInfo) {
+                router().go('/chats');
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async handleSubmit(e: Event) {
         e.preventDefault();
         const loginElem: HTMLInputElement = document.querySelector('.login')!;
         const passwordElem: HTMLInputElement = document.querySelector('.password')!;
         loginElem.value = escape(loginElem.value);
         passwordElem.value = escape(passwordElem.value);
-        auth.signIn({
-            data: {
-                login: loginElem.value,
-                password: passwordElem.value
-            }
-        })
-            .then(() => router().go('/chats'))
-            .catch(console.log);
+        try {
+            await auth.signIn({
+                data: {
+                    login: loginElem.value,
+                    password: passwordElem.value
+                }
+            });
+            const userInfo = <XMLHttpRequest>await auth.userInfo();
+            GlobalStore.dispatchAction(ActionTypes.GET_CURRENT_USER, JSON.parse(userInfo.response));
+            router().go('/chats');
+        } catch (e) {
+            console.log(e);
+        }
         submitValidation([
             {
                 elem: loginElem,
