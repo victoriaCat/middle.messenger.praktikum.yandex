@@ -4,7 +4,7 @@ import {submitValidation, blurValidation, validatedInput} from '../../modules/st
 import {template} from './signIn.tmpl';
 import {auth} from '../../api/authAPI';
 import escape from '../../modules/escape';
-import router from '../../index';
+import router from '../../../static';
 
 export class SignIn extends Block {
     constructor() {

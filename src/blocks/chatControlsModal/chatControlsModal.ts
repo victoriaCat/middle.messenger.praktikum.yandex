@@ -2,7 +2,7 @@ import Block from '../../modules/block/block';
 import {template} from './chatControlsModal.tmpl';
 import {chats} from '../../api/chatsAPI';
 import {users} from '../../api/usersAPI';
-import router from '../../index';
+import router from '../../../static';
 
 type chatDataT = {
     users: any[];
@@ -27,18 +27,12 @@ export class ChatControlsModal extends Block {
         mainNode.removeChild(modal);
     }
 
-    searchUser(data: chatDataT) {
-        const userLoginInput: HTMLInputElement = document.querySelector('.add-remove-user-login')!;
-        const userLogin = userLoginInput.value;
+    searchUser(login: string) {
         const searchByLoginData = {
-            login: userLogin
+            login
         };
         return users.searchByLogin({
             data: searchByLoginData
-        }).then(result => {
-            // @ts-ignore
-            const response = JSON.parse(result.response);
-            data.users.push(response[0].id);
         }).catch(console.log);
     }
 
@@ -60,16 +54,19 @@ export class ChatControlsModal extends Block {
         }
     }
 
-    handleSubmit(e: Event) {
+    async handleSubmit(e: Event) {
         e.preventDefault();
+        const userLoginInput: HTMLInputElement = document.querySelector('.add-remove-user-login')!;
         const chatData: chatDataT = {
             users: [],
             chatId: Number(this.props.chatId)
         };
+        const userByLogin = await this.searchUser(userLoginInput.value);
+        chatData.users.push(userByLogin[0].id);
         if (this.props.modalType === 'add') {
-            this.searchUser(chatData).then(() => this.addUser(chatData));
+            await this.addUser(chatData);
         } else if (this.props.modalType === 'remove') {
-            this.searchUser(chatData).then(() => this.removeUser(chatData));
+            await this.removeUser(chatData);
         }
     }
 

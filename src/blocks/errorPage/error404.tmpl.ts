@@ -5,3 +5,4 @@ export const source = `<div class="client-error-page">
             <a class="error-return-to-chats-link basic-link" href="/chats">Назад к чатам</a>
         </div>
 </div>`;
+

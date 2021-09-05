@@ -1,7 +1,7 @@
 const source = `<div class="chat-header">
                 <div class="chat-header-left">
-                    <div class="chat-picture"></div>
-                    <div class="chat-name">Вадим</div>
+                    <img class="chat-picture" src={{chatAvatar}}/>
+                    <div class="chat-name">{{chatTitle}}</div>
                 </div>
                 <button class="chat-options">
                     <img class="chat-options-icon" src="assets/icons/more.svg" alt="Функции чата">

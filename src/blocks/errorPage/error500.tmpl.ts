@@ -1,4 +1,4 @@
-export const source =` <div class="server-error-page">
+export const source =`<div class="server-error-page">
         <div class="error-block">
             <h1 class="error-code">500</h1>
             <h2 class="error-comment basic-header">Мы уже фиксим</h2>

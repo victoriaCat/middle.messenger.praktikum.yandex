@@ -4,6 +4,7 @@ import {submitValidation, blurValidation, validatedInput} from '../../modules/st
 import {template} from './changePassword.tmpl';
 import escape from '../../modules/escape';
 import {users} from '../../api/usersAPI';
+import {auth} from '../../api/authAPI';
 
 export class ChangePassword extends Block {
     constructor() {
@@ -44,9 +45,15 @@ export class ChangePassword extends Block {
             }),
             events: {
                 submit: (e: Event) => this.handleSubmit(e),
-                focusout: (e: Event) => this.handleInputsBlur(e)
+                focusout: (e: Event) => this.handleInputBlur(e),
+                focusin: (e: Event) => this.handleInputFocus(e)
             }
         });
+    }
+
+    componentDidMount() {
+        auth.getUserInfo().then(result => this.setProps({avatar: result.avatar}))
+            .catch(console.log);
     }
 
     defineInputs = (inputs: validatedInput[]) => {
@@ -73,7 +80,7 @@ export class ChangePassword extends Block {
         submitValidation(inputs);
     }
 
-    handleInputsBlur(e: Event) {
+    handleInputBlur(e: Event) {
         e.stopPropagation();
         const {inputs} = this.props;
         this.defineInputs(inputs);
@@ -84,10 +91,20 @@ export class ChangePassword extends Block {
         })
     }
 
+    handleInputFocus(e: Event) {
+        e.stopPropagation();
+        const target = e.target as HTMLElement;
+        target.classList.remove('validation-error');
+        const errElem = document.querySelector(`.${target.classList[1]}-err`);
+        errElem!.classList.remove('show');
+    }
+
     render() {
         const {inputs, submitButton} = this.props;
         return template({
             inputs,
+            avatar: this.props.avatar ? `https://ya-praktikum.tech/api/v2/resources/${this.props.avatar}`
+                : 'assets/icons/profile-picture.svg',
             submitButton: submitButton.render()
         });
     }

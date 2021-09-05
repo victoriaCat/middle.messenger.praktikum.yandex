@@ -16,8 +16,9 @@ class UsersAPI extends BaseAPI {
         return usersAPIInstance.put('/profile/avatar', options);
     }
 
-    searchByLogin(options: Options) {
-        return usersAPIInstance.post('/search', options);
+    async searchByLogin(options: Options) {
+        const userByLogin = await usersAPIInstance.post('/search', options);
+        return JSON.parse(<string>userByLogin);
     }
 }
 

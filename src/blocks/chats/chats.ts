@@ -3,6 +3,7 @@ import {template} from './chats.tmpl';
 import {chats} from '../../api/chatsAPI';
 import {CreateChatModal} from '../createChatModal/createChatModal';
 import {ChatWindow} from '../chatWindow/chatWindow';
+import {ActionTypes, store} from '../../modules/store';
 
 export class Chats extends Block {
     constructor() {
@@ -13,15 +14,23 @@ export class Chats extends Block {
         });
     }
 
-    componentDidMount() {
-        // @ts-ignore
-        chats.getChats().then(result => this.setProps({...this.props, chats: JSON.parse(result.response)}))
-            .catch(console.log);
+    async componentDidMount() {
+        store.subscribe(ActionTypes.GET_CHATS, this.setChats.bind(this));
+        try {
+            const chatList = await chats.getChats();
+            store.dispatchAction(ActionTypes.GET_CHATS, chatList);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
-    openChatWindow() {
-        const chatItem: HTMLElement = document.querySelector('.chat-item')!;
-        const chatWindow = new ChatWindow({chatId: chatItem.dataset.chatId});
+    setChats() {
+        this.setProps({...this.props, chats: store.get('chats')});
+    }
+
+    openChatWindow(chat: HTMLElement) {
+        store.dispatchAction(ActionTypes.GET_CHAT_ID, chat.dataset.chatId);
+        const chatWindow = new ChatWindow({});
         const chatsPage = document.querySelector('.chats-page')!;
         const chooseChatWindow = document.querySelector('.chat-window')!;
         chatsPage.removeChild(chooseChatWindow);
@@ -29,11 +38,12 @@ export class Chats extends Block {
     }
 
     handleClick(e: Event) {
-        if (e.target === document.querySelector('.create-new-chat')) {
+        const target = e.target as HTMLElement;
+        if (target === document.querySelector('.create-new-chat')) {
             const createChatModal = new CreateChatModal();
             document.querySelector('.app main')!.appendChild(createChatModal.getContent()!);
-        } else if (e.target === document.querySelector('.chat-item')) {
-            this.openChatWindow();
+        } else if (target.className === 'chat-item') {
+            this.openChatWindow(target);
         }
     }
 
