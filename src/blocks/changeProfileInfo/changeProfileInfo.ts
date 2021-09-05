@@ -81,16 +81,15 @@ export class ChangeProfileInfo extends Block {
             events: {
                 submit: (e: Event) => this.handleSubmit(e),
                 focusout: (e: Event) => this.handleInputBlur(e),
-                click: (e: Event) => this.handleClick(e)
+                click: (e: Event) => this.handleClick(e),
+                focusin: (e: Event) => this.handleInputFocus(e)
             }
         });
     }
 
     componentDidMount() {
-        // @ts-ignore
-        auth.userInfo().then(result => this.setProps({...this.props, userData: JSON.parse(result.response)}))
+        auth.getUserInfo().then(result => this.setProps({...this.props, userData: result}))
             .catch(console.log);
-
         this.definePlaceholders();
     }
 
@@ -152,6 +151,14 @@ export class ChangeProfileInfo extends Block {
         })
     }
 
+    handleInputFocus(e: Event) {
+        e.stopPropagation();
+        const target = e.target as HTMLElement;
+        target.classList.remove('validation-error');
+        const errElem = document.querySelector(`.${target.classList[1]}-err`);
+        errElem!.classList.remove('show');
+    }
+
     handleClick(e: Event) {
         if (e.target === document.querySelector('.change-picture')) {
             e.preventDefault();
@@ -169,7 +176,8 @@ export class ChangeProfileInfo extends Block {
         const {inputs, submitButton} = this.props;
         return template({
             inputs,
-            avatar: this.props.userData.avatar || 'assets/icons/profile-picture.svg',
+            avatar: this.props.userData.avatar ? `https://ya-praktikum.tech/api/v2/resources/${this.props.userData.avatar}`
+                : 'assets/icons/profile-picture.svg',
             submitButton: submitButton.render()
         })
     }

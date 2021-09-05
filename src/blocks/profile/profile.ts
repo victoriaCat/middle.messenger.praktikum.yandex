@@ -2,7 +2,7 @@ import Block from '../../modules/block/block';
 import {template} from './profile.tmpl';
 import {auth} from '../../api/authAPI';
 import router from '../../../static';
-import {ActionTypes, GlobalStore} from '../../modules/store';
+import {ActionTypes, store} from '../../modules/store';
 
 export class Profile extends Block {
     constructor() {
@@ -14,10 +14,14 @@ export class Profile extends Block {
         })
     }
 
-    componentDidMount() {
-        // @ts-ignore
-        auth.userInfo().then(result => this.setProps({...this.props, userData: JSON.parse(result.response)}))
-            .catch(console.log);
+    async componentDidMount() {
+        try {
+            const userInfo = await auth.getUserInfo();
+            store.dispatchAction(ActionTypes.GET_CURRENT_USER, userInfo);
+            this.setProps({...this.props, userData: userInfo});
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     handleClick(e: Event) {
@@ -25,10 +29,9 @@ export class Profile extends Block {
         if (e.target === quitLink) {
             e.preventDefault();
             auth.logOut().then(() => {
-                GlobalStore.dispatchAction(ActionTypes.LOGOUT);
+                store.dispatchAction(ActionTypes.LOGOUT);
                 router().go('/');
-            })
-                .catch(console.log);
+            }).catch(console.log);
         }
     }
 
@@ -41,7 +44,7 @@ export class Profile extends Block {
             login: userData.login || '',
             email: userData.email || '',
             phone: userData.phone || '',
-            avatar: `https://ya-praktikum.tech/api/v2/resources${userData.avatar}` || 'assets/icons/profile-picture.svg'
+            avatar: userData.avatar ? `https://ya-praktikum.tech/api/v2/resources/${userData.avatar}` : 'assets/icons/profile-picture.svg'
         })
     }
 }

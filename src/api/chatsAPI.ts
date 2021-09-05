@@ -8,8 +8,9 @@ class ChatsAPI extends BaseAPI {
         return chatAPIInstance.post('/', options);
     }
 
-    getChats() {
-        return chatAPIInstance.get('/');
+    async getChats() {
+        const chats = await chatAPIInstance.get('/');
+        return JSON.parse(<string>chats);
     }
 
     addUsers(options: Options) {
@@ -20,8 +21,9 @@ class ChatsAPI extends BaseAPI {
         return chatAPIInstance.delete('/users', options);
     }
 
-    getChatToken(id: string) {
-        return chatAPIInstance.post(`/token/${id}`);
+    async getChatToken(id: string) {
+        const token = await chatAPIInstance.post(`/token/${id}`)
+        return JSON.parse(<string>token);
     }
 }
 

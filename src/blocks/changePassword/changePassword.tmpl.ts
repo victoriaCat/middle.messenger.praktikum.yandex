@@ -10,7 +10,7 @@ const source = `<div class="change-password-page">
         </div>
         <div class="profile-container">
             <div class="change-profile-user-picture">
-                <img class="user-picture-default-icon" src="assets/icons/profile-picture.svg" alt="Фото">
+                <img class="user-picture-default-icon" src={{avatar}} alt="Фото">
             </div>
             <form class="change-user-info" action="" id="form-root">
                 {{#each inputs}}

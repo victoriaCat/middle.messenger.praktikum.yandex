@@ -45,7 +45,7 @@ export default class HTTPTransport {
         return this.request(this.baseURL + url, {...options, method: METHODS.DELETE}, options.timeout);
     };
 
-    request = (url: string, options: Options = {}, timeout: number | unknown = 5000) => {
+    request = (url: string, options: Options = {}, timeout: number | unknown = 5000): Promise<XMLHttpRequest | string> => {
         const {method, data, headers} = options;
 
         return new Promise((resolve, reject) => {
@@ -67,7 +67,15 @@ export default class HTTPTransport {
             }
 
             xhr.onload = function () {
-                resolve(xhr);
+                if (xhr.status === 500) {
+                    reject(xhr.response);
+                    return;
+                }
+
+                if (xhr.status !== 200) {
+                    reject(JSON.parse(xhr.response));
+                }
+                resolve(xhr.response);
             };
 
             xhr.onabort = reject;
@@ -81,8 +89,7 @@ export default class HTTPTransport {
             } else if (!headers) {
                 xhr.send(JSON.stringify(data));
             } else {
-                // @ts-ignore
-                xhr.send(data);
+                xhr.send(<FormData>data);
             }
         });
     };

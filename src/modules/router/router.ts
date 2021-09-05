@@ -1,10 +1,12 @@
 import Block, {renderBlock} from '../block/block';
-import { GlobalStore } from '../store';
-
+import {ActionTypes, store} from '../store';
+import {auth} from '../../api/authAPI';
 
 function isEqual(lhs: string, rhs: string): boolean {
     return lhs === rhs;
 }
+
+const PUBLIC_ROUTES = ['/', '/sign_in', '/404', '/500'];
 
 class Route {
     private _pathname: string;
@@ -75,14 +77,22 @@ export class Router {
         this._onRoute(window.location.pathname);
     }
 
-    _onRoute(pathname: string) {
+    async _onRoute(pathname: string) {
+        if (!PUBLIC_ROUTES.includes(pathname)) {
+            try {
+                const userInfo = await auth.getUserInfo();
+                store.dispatchAction(ActionTypes.GET_CURRENT_USER, userInfo);
+            } catch (e) {
+                return this.go('/');
+            }
+        }
         const route = this.getRoute(pathname);
 
         if (!route) {
             return this.go('/404');
         }
 
-        GlobalStore.unsubscribeAll();
+        store.unsubscribeAll();
 
         if (this._currentRoute) {
             this._currentRoute.leave();
@@ -93,7 +103,7 @@ export class Router {
     }
 
     go(pathname: string) {
-        this.history!.pushState({}, "", pathname);
+        this.history!.pushState({}, '', pathname);
         this._onRoute(pathname);
     }
 

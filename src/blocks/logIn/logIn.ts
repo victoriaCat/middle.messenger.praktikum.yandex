@@ -1,7 +1,7 @@
 import Block from '../../modules/block/block';
 import {Button} from '../../components/button/button';
 import {Input} from '../../components/input/input';
-import {ActionTypes, GlobalStore} from '../../modules/store';
+import {ActionTypes, store} from '../../modules/store';
 import {submitValidation, blurValidation} from '../../modules/styleValidation';
 import {template} from './logIn.tmpl';
 import {auth} from '../../api/authAPI';
@@ -39,12 +39,12 @@ export class LogIn extends Block {
 
     async componentDidMount() {
         try {
-            const userInfo = await auth.userInfo();
+            const userInfo = await auth.getUserInfo();
             if (userInfo) {
                 router().go('/chats');
             }
         } catch (e) {
-            console.log(e);
+            return;
         }
     }
 
@@ -61,8 +61,8 @@ export class LogIn extends Block {
                     password: passwordElem.value
                 }
             });
-            const userInfo = <XMLHttpRequest>await auth.userInfo();
-            GlobalStore.dispatchAction(ActionTypes.GET_CURRENT_USER, JSON.parse(userInfo.response));
+            const userInfo = await auth.getUserInfo();
+            store.dispatchAction(ActionTypes.GET_CURRENT_USER, userInfo);
             router().go('/chats');
         } catch (e) {
             console.log(e);

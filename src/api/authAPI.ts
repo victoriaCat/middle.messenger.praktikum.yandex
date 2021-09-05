@@ -4,8 +4,14 @@ import {BaseAPI} from './baseAPI';
 const authAPIInstance = new HTTP('https://ya-praktikum.tech/api/v2/auth');
 
 class AuthAPI extends BaseAPI {
-    userInfo() {
-        return authAPIInstance.get('/user');
+    private userInfo: XMLHttpRequest | string | null = null;
+
+    async getUserInfo() {
+        this.userInfo = this.userInfo ??  await authAPIInstance.get('/user');
+        setTimeout(() => {
+            this.userInfo = null;
+        }, 1000);
+        return JSON.parse(<string>this.userInfo);
     }
 
     signUp(options: Options) {

@@ -1,7 +1,7 @@
-import {ActionTypes, GlobalStore} from './store';
+import {ActionTypes, store} from './store';
 
 type messagePayloadT = {
-    content: string,
+    content: string;
     type: string
 }
 
@@ -27,7 +27,6 @@ export default class WebSocketService {
     }
 
     send(payload: messagePayloadT) {
-        console.log('Message sent');
         this.socket?.send(JSON.stringify(payload));
     }
 
@@ -55,7 +54,7 @@ export default class WebSocketService {
         } else {
             data = configureData(data);
         }
-        GlobalStore.dispatchAction(ActionTypes.GET_CHAT_MESSAGES, data);
+        store.dispatchAction(ActionTypes.GET_CHAT_MESSAGES, data);
     }
 
     onError(event: any) {
